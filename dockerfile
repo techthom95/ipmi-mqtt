@@ -14,15 +14,12 @@ RUN apt-get update && \
 # Set working directory
 WORKDIR /app
 
-# Unpack the utility
-COPY SMCIPMITool.tar.gz /tmp/
-RUN tar -xzf /tmp/SMCIPMITool.tar.gz -C /tmp/ && \
-    mv /tmp/SMCIPMITool/SMCIPMITool.jar /usr/local/bin/SMCIPMITool.jar && \
-    rm -rf /tmp/SMCIPMITool*
-
 # Install the Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the SMCIPMITool
+COPY SMCIPMITool.jar /usr/local/bin/SMCIPMITool.jar
 
 # Copy the entrypoint script and make it executable
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
