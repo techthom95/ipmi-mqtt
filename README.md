@@ -15,7 +15,7 @@ Using Docker Compose is the preferred method for managing the container lifecycl
 ---
 services:
   ipmi-mqtt:
-    image: techthom995/ipmi-mqtt:1.0.0
+    image: techthom995/ipmi-mqtt:latest
     container_name: ipmi-mqtt
     restart: unless-stopped
     volumes:
@@ -47,7 +47,7 @@ docker run -d \
   -e IPMI_HOST=IPMI_SERVER_IP \
   -e IPMI_USER=IPMI_SERVER_USERNAME \
   -e IPMI_PASS=IPMI_SERVER_PASSWORD \
-  techthom995/ipmi-mqtt:1.0.0
+  techthom995/ipmi-mqtt:latest
 ```
 
 ## Parameters
