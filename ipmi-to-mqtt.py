@@ -174,7 +174,7 @@ def publish_discovery_config():
             payload['state_class'] = 'measurement'
 
         try:
-            MQTT_CLIENT.publish(discovery_topic, json.dumps(payload), retain=False)
+            MQTT_CLIENT.publish(discovery_topic, json.dumps(payload), retain=True)
             logger.debug(f"Discovery published for: {props['Name']}")
         except Exception as e:
             logger.error(f"Error publishing discovery for {key}: {e}")
