@@ -174,8 +174,7 @@ def publish_discovery_config():
             payload['state_class'] = 'measurement'
 
         try:
-            # Publish with retain=True so Home Assistant discovers it even if the container is down
-            MQTT_CLIENT.publish(discovery_topic, json.dumps(payload), retain=True)
+            MQTT_CLIENT.publish(discovery_topic, json.dumps(payload), retain=False)
             logger.debug(f"Discovery published for: {props['Name']}")
         except Exception as e:
             logger.error(f"Error publishing discovery for {key}: {e}")
