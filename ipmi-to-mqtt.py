@@ -147,9 +147,9 @@ def publish_discovery_config():
     
     for key, props in SENSORS.items():
         # Sensor ID: e.g., ipmi_server1_total_power
-        sensor_id = f"{BASE_CLIENT_ID}_{key.replace('/', '_')}"
+        sensor_id = key.replace('/', '_')
         
-        # Discovery Topic: homeassistant/sensor/ipmi_server1_total_power/config
+        # Discovery Topic: homeassistant/sensor/total_power/config
         discovery_topic = f"{HA_DISCOVERY_PREFIX}/sensor/{sensor_id}/config"
         
         # State Topic: techthom/ipmi_server1/power/total/watts
@@ -157,7 +157,7 @@ def publish_discovery_config():
         
         # Configuration Payload
         payload = {
-            'name': f"IPMI {BASE_CLIENT_ID} {props['Name']}",
+            'name': f"{props['Name']}",
             'unique_id': sensor_id,
             'state_topic': state_topic,
             'unit_of_measurement': props.get('Unit', ''),
