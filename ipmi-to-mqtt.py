@@ -147,7 +147,7 @@ def publish_discovery_config():
     
     for key, props in SENSORS.items():
         # Sensor ID: e.g., ipmi_server1_total_power
-        sensor_id = key.replace('/', '_')
+        sensor_id = f"{BASE_CLIENT_ID}_{key.replace('/', '_')}"
         
         # Discovery Topic: homeassistant/sensor/total_power/config
         discovery_topic = f"{HA_DISCOVERY_PREFIX}/sensor/{sensor_id}/config"
