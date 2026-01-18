@@ -72,7 +72,7 @@ def save_energy_state():
 
 # --- MQTT Callbacks ---
 
-def on_connect(client, userdata, flags, rc, properties=None):
+def on_connect(client, userdata, flags, rc, *args):
     #Callback triggered upon connecting to the MQTT broker
     global DISCOVERY_SENT
     if rc == 0:
@@ -84,7 +84,7 @@ def on_connect(client, userdata, flags, rc, properties=None):
     else:
         logger.error(f"MQTT Connection failed with code {rc}.")
 
-def on_disconnect(client, userdata, rc, properties=None):
+def on_disconnect(client, userdata, rc, *args):
     #Callback triggered upon disconnecting from the MQTT broker
     logger.warning(f"MQTT Disconnected. Code: {rc}. Attempting to reconnect...")
 
@@ -296,10 +296,6 @@ def calculate_energy(current_watts):
 
 def publish_to_mqtt(topic: str, value):
     # Uses the global client to publish sensor data
-    if MQTT_CLIENT is None or not MQTT_CLIENT.is_connected():
-        logger.warning("MQTT client is not connected. Skipping publication.")
-        return False
-
     try:
         # Publish the state value as a string
         result = MQTT_CLIENT.publish(topic, str(value), retain=False)
@@ -331,9 +327,12 @@ if __name__ == "__main__":
         data = get_readings()
         
         # Publish readings
-        if data:
-            for key, value in data.items():
-                full_topic = f"{BASE_TOPIC}/power/{key}"
-                publish_to_mqtt(full_topic, value)
+        if MQTT_CLIENT is None or not MQTT_CLIENT.is_connected():
+            logger.warning("MQTT client is not connected. Skipping publication.")
+        else:
+            if data:
+                for key, value in data.items():
+                    full_topic = f"{BASE_TOPIC}/power/{key}"
+                    publish_to_mqtt(full_topic, value)
        
         time.sleep(INTERVAL)
