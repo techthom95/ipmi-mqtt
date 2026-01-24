@@ -35,7 +35,6 @@ BASE_TOPIC = f"techthom/ipmi_{BASE_CLIENT_ID}"
 
 # --- Discovery Constants ---
 HA_DISCOVERY_PREFIX = "homeassistant"
-DISCOVERY_SENT = False # Flag to ensure discovery runs only once
 
 # --- Energy Counter Persistence ---
 ENERGY_FILE = "/app/data/energy_total.json"
@@ -74,13 +73,9 @@ def save_energy_state():
 
 def on_connect(client, userdata, flags, rc, *args):
     #Callback triggered upon connecting to the MQTT broker
-    global DISCOVERY_SENT
     if rc == 0:
         logger.info(f"MQTT Connected successfully. Client ID: {client._client_id.decode()}")
-        # Run discovery only after a successful connection and only once
-        if not DISCOVERY_SENT:
-            publish_discovery_config()
-            DISCOVERY_SENT = True
+        publish_discovery_config()
     else:
         logger.error(f"MQTT Connection failed with code {rc}.")
 
